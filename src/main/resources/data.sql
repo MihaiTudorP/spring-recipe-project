@@ -8,3 +8,8 @@ INSERT INTO unit_of_measure (description) VALUES ('Tablespoon');
 INSERT INTO unit_of_measure (description) VALUES ('Cup');
 INSERT INTO unit_of_measure (description) VALUES ('Pinch');
 INSERT INTO unit_of_measure (description) VALUES ('Ounce');
+INSERT INTO unit_of_measure (description) VALUES ('Dash');
+INSERT INTO unit_of_measure (description) VALUES ('Piece');
+INSERT INTO unit_of_measure (description) VALUES ('Some');
+INSERT INTO unit_of_measure (description) VALUES ('Bunch');
+INSERT INTO unit_of_measure (description) VALUES ('Clove');
