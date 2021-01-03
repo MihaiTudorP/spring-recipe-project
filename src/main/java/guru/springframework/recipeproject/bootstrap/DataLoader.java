@@ -4,28 +4,28 @@ import guru.springframework.recipeproject.domain.*;
 import guru.springframework.recipeproject.repositories.CategoryRepository;
 import guru.springframework.recipeproject.repositories.RecipeRepository;
 import guru.springframework.recipeproject.repositories.UnitOfMeasureRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
-import java.io.*;
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.Set;
 
+@Slf4j
+@RequiredArgsConstructor
 @Component
 public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
     private final CategoryRepository categoryRepository;
     private final RecipeRepository recipeRepository;
     private final UnitOfMeasureRepository unitOfMeasureRepository;
 
-    public DataLoader(CategoryRepository categoryRepository, RecipeRepository recipeRepository, UnitOfMeasureRepository unitOfMeasureRepository) {
-        this.categoryRepository = categoryRepository;
-        this.recipeRepository = recipeRepository;
-        this.unitOfMeasureRepository = unitOfMeasureRepository;
-    }
-
     @Override
+    @Transactional
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
+        log.debug("Loading data...");
         final UnitOfMeasure teaspoon = unitOfMeasureRepository.findByDescription("Teaspoon").get();
         final UnitOfMeasure piece = unitOfMeasureRepository.findByDescription("Piece").get();
         final UnitOfMeasure tablespoon = unitOfMeasureRepository.findByDescription("Tablespoon").get();
@@ -78,9 +78,7 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
         tortillaChips.setAmount(BigDecimal.valueOf(1));
         tortillaChips.setUnitOfMeasure(some);
         Set<Ingredient> ingredients = Set.of(avocado, salt, lJuice, onion, serranoChile, cilantro, blackPepper, tomato, radishesOrjicama, tortillaChips);
-        ingredients.forEach(ingredient -> {ingredient.setRecipe(perfectGuacamole);});
         Notes notes = new Notes();
-        notes.setRecipe(perfectGuacamole);
         notes.setRecipeNotes("Guacamole is best eaten right after it’s made. Like apples, avocados start to oxidize and turn brown once they’ve been cut. That said, the acid in the lime juice you add to guacamole can help slow down that process, and if you store the guacamole properly, you can easily make it a few hours ahead if you are preparing for a party.\n" +
                 "The trick to keeping guacamole green is to make sure air doesn’t touch it! Transfer it to a container, cover with plastic wrap, and press down on the plastic wrap to squeeze out any air pockets. Make sure any exposed surface of the guacamole is touching the plastic wrap, not air. This will keep the amount of browning to a minimum.\n" +
                 "You can store the guacamole in the fridge this way for up to three days.\n" +
@@ -123,11 +121,9 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
         saltToTaste.setUnitOfMeasure(some);
 
         ingredients = Set.of(spinach, oliveOil, garlic, saltToTaste);
-        ingredients.forEach(ingredient -> {ingredient.setRecipe(sauteedSpinach);});
         category = categoryRepository.findByDescription("American").get();
         categories = Set.of(category);
         notes = new Notes();
-        notes.setRecipe(sauteedSpinach);
         notes.setRecipeNotes("My father prepares spinach this way at least once or twice a week, usually made with fresh spinach from the farmer’s market. According to dad he overcooked it for years, until he learned that you shouldn’t cook spinach beyond the point that it just wilts.\n" +
                 "Spinach releases a lot of water as it cooks, so my father’s trick is to drain and dry the spinach leaves as well as you can, using a salad spinner if need be, before cooking them.\n" +
                 "Then sauté some garlic in olive oil in a large wide pan, and add the cleaned, drained, and dried spinach leaves to the pan. Pack the pan with spinach, cover and cook for only a minute or two tops.");
@@ -148,32 +144,6 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
                 "Remove from pan and drain excess liquid: After 2 minutes of covered cooking the spinach should be completely wilted. Remove from heat.\n" +
                 "Drain any excess liquid from the pan. Add a little more olive oil, sprinkle with salt to taste. Serve immediately.\n");
         recipeRepository.save(sauteedSpinach);
-    }
-
-    private byte[] getImage(String pathname) {
-        byte[] image;
-        FileInputStream fileInputStream = null;
-        File inputFile;
-        try{
-            inputFile = new File(pathname);
-            fileInputStream = new FileInputStream(inputFile);
-            image = new byte[(int) inputFile.length()];
-            fileInputStream.read(image);
-        } catch (FileNotFoundException e){
-            System.out.println("File not found!");
-            image = null;
-        } catch (IOException e) {
-            e.printStackTrace();
-            image = null;
-        } finally {
-            if(fileInputStream != null){
-                try {
-                    fileInputStream.close();
-                } catch (IOException e){
-                    e.printStackTrace();
-                }
-            }
-        }
-        return image;
+        log.debug("Data loaded successfully!");
     }
 }
