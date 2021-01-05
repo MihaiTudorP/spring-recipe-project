@@ -7,6 +7,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Slf4j
 @RequiredArgsConstructor
 @Service
@@ -14,8 +17,10 @@ public class RecipeServiceImpl implements RecipeService {
     private final RecipeRepository recipeRepository;
 
     @Override
-    public Iterable<Recipe> findAll() {
+    public Set<Recipe> findAll() {
         log.debug("Fetching recipes");
-        return recipeRepository.findAll();
+        Set<Recipe> recipes = new HashSet<>();
+        recipeRepository.findAll().forEach(recipes::add);
+        return recipes;
     }
 }
