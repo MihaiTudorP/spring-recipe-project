@@ -16,23 +16,11 @@
             <div class="card">
 
                 <div class="card-header bg-dark text-white">
-                    <h1>My Recipes!</h1>
+                    <h1>Recipe with id #<span th:text="${id}"></span></h1>
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive" th:if="${not #lists.isEmpty(recipes)}">
-                        <table class="table table-hover">
-                            <thead class="thead-dark">
-                            <tr>
-                                <th>ID</th>
-                                <th>Description</th>
-                            </tr>
-                            </thead>
-                            <tr th:each="recipe : ${recipes}">
-                                <td th:text="${recipe.id}">334</td>
-                                <td><a href="#" th:href="@{'/recipe/show/' + ${recipe.id}}" th:text="${recipe.description}">Tasty Goodnees 3</a></td>
-                            </tr>
-                        </table>
-                    </div>
+                    <p th:text="${exception}">Not Found!</p>
+                    <p><a href="/">Go back</a></p>
                 </div>
             </div>
         </div>

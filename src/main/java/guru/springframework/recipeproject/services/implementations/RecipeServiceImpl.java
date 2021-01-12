@@ -14,6 +14,7 @@ import java.util.Set;
 @RequiredArgsConstructor
 @Service
 public class RecipeServiceImpl implements RecipeService {
+    public static final String RECIPE_NOT_FOUND = "Recipe not found!";
     private final RecipeRepository recipeRepository;
 
     @Override
@@ -22,5 +23,10 @@ public class RecipeServiceImpl implements RecipeService {
         Set<Recipe> recipes = new HashSet<>();
         recipeRepository.findAll().forEach(recipes::add);
         return recipes;
+    }
+
+    @Override
+    public Recipe findById(long id) {
+        return recipeRepository.findById(id).orElseThrow(() -> new RuntimeException(RECIPE_NOT_FOUND)) ;
     }
 }

@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.Assert.*;
@@ -16,6 +17,7 @@ import static org.mockito.Mockito.*;
 
 public class RecipeServiceImplTest {
 
+    public static final String DESCRIPTION = "test";
     RecipeServiceImpl recipeService;
 
     @Mock
@@ -37,5 +39,20 @@ public class RecipeServiceImplTest {
         Set<Recipe> recipes = recipeService.findAll();
         assertEquals(1, recipes.size());
         verify(recipeRepository, times(1)).findAll();
+    }
+
+    @Test
+    public void findById(){
+        when(recipeRepository.findById(1L)).thenReturn(Optional.of(Recipe.builder().id(1L).description(DESCRIPTION).build()));
+        Recipe recipe = recipeService.findById(1L);
+        assertEquals(1L, (long) recipe.getId());
+        assertEquals(DESCRIPTION, recipe.getDescription());
+        verify(recipeRepository, times(1)).findById(1L);
+    }
+
+    @Test(expected = RuntimeException.class)
+    public void findByIdNotFound(){
+        assertNull(recipeService.findById(1L));
+        verify(recipeRepository, times(1)).findById(1L);
     }
 }

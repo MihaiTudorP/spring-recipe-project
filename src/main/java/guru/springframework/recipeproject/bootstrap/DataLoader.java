@@ -41,43 +41,52 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
         avocado.setUnitOfMeasure(piece);
         avocado.setAmount(BigDecimal.valueOf(2));
         avocado.setDescription("Avocado");
+        perfectGuacamole.addIngredient(avocado);
         Ingredient salt = new Ingredient();
         salt.setDescription("Salt");
         salt.setAmount(BigDecimal.valueOf(0.25));
         salt.setUnitOfMeasure(teaspoon);
+        perfectGuacamole.addIngredient(salt);
         Ingredient lJuice = new Ingredient();
         lJuice.setDescription("Fresh lime juice or lemon juice");
         lJuice.setUnitOfMeasure(tablespoon);
         lJuice.setAmount(BigDecimal.valueOf(1));
+        perfectGuacamole.addIngredient(lJuice);
         Ingredient onion = new Ingredient();
         onion.setDescription("Minced red onion or thinly sliced green onion");
         onion.setAmount(BigDecimal.valueOf(2));
         onion.setUnitOfMeasure(tablespoon);
+        perfectGuacamole.addIngredient(onion);
         Ingredient serranoChile = new Ingredient();
         serranoChile.setDescription("Serrano chiles, stems and seeds removed, minced");
         serranoChile.setAmount(BigDecimal.valueOf(2));
         serranoChile.setUnitOfMeasure(piece);
+        perfectGuacamole.addIngredient(serranoChile);
         Ingredient cilantro = new Ingredient();
         cilantro.setDescription("Cilantro (leaves and tender stems), finely chopped");
         cilantro.setAmount(BigDecimal.valueOf(2));
         cilantro.setUnitOfMeasure(tablespoon);
+        perfectGuacamole.addIngredient(cilantro);
         Ingredient blackPepper = new Ingredient();
         blackPepper.setDescription("Freshly grated black pepper");
         blackPepper.setAmount(BigDecimal.valueOf(1));
         blackPepper.setUnitOfMeasure(dash);
+        perfectGuacamole.addIngredient(blackPepper);
         Ingredient tomato = new Ingredient();
         tomato.setDescription("Ripe tomato, seeds and pulp removed, chopped");
         tomato.setAmount(BigDecimal.valueOf(0.5));
         tomato.setUnitOfMeasure(piece);
+        perfectGuacamole.addIngredient(tomato);
         Ingredient radishesOrjicama = new Ingredient();
         radishesOrjicama.setDescription("Red radishes or jicama, to garnish");
         radishesOrjicama.setAmount(BigDecimal.valueOf(1));
         radishesOrjicama.setUnitOfMeasure(some);
+        perfectGuacamole.addIngredient(radishesOrjicama);
         Ingredient tortillaChips = new Ingredient();
         tortillaChips.setDescription("Tortilla chips, to serve");
         tortillaChips.setAmount(BigDecimal.valueOf(1));
         tortillaChips.setUnitOfMeasure(some);
-        Set<Ingredient> ingredients = Set.of(avocado, salt, lJuice, onion, serranoChile, cilantro, blackPepper, tomato, radishesOrjicama, tortillaChips);
+        perfectGuacamole.addIngredient(tortillaChips);
         Notes notes = new Notes();
         notes.setRecipeNotes("Guacamole is best eaten right after it’s made. Like apples, avocados start to oxidize and turn brown once they’ve been cut. That said, the acid in the lime juice you add to guacamole can help slow down that process, and if you store the guacamole properly, you can easily make it a few hours ahead if you are preparing for a party.\n" +
                 "The trick to keeping guacamole green is to make sure air doesn’t touch it! Transfer it to a container, cover with plastic wrap, and press down on the plastic wrap to squeeze out any air pockets. Make sure any exposed surface of the guacamole is touching the plastic wrap, not air. This will keep the amount of browning to a minimum.\n" +
@@ -96,7 +105,6 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
                 "Remember that much of this is done to taste because of the variability in the fresh ingredients. Start with this recipe and adjust to your taste.\n" +
                 "Chilling tomatoes hurts their flavor, so if you want to add chopped tomato to your guacamole, add it just before serving.\n" +
                 "Serve: Serve immediately, or if making a few hours ahead, place plastic wrap on the surface of the guacamole and press down to cover it and to prevent air reaching it. (The oxygen in the air causes oxidation which will turn the guacamole brown.) Refrigerate until ready to serve.\n");
-        perfectGuacamole.setIngredients(ingredients);
         perfectGuacamole.setPrepTime(10);
         perfectGuacamole.setSource("Simply recipes");
         perfectGuacamole.setUrl("https://www.simplyrecipes.com/recipes/perfect_guacamole/");
@@ -107,20 +115,22 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
         spinach.setDescription("Spinach");
         spinach.setAmount(BigDecimal.valueOf(2));
         spinach.setUnitOfMeasure(unitOfMeasureRepository.findByDescription("Bunch").get());
+        sauteedSpinach.addIngredient(spinach);
         Ingredient oliveOil = new Ingredient();
         oliveOil.setAmount(BigDecimal.valueOf(1));
         oliveOil.setDescription("Extra virgin olive oil");
         oliveOil.setUnitOfMeasure(some);
+        sauteedSpinach.addIngredient(oliveOil);
         Ingredient garlic = new Ingredient();
         garlic.setDescription("Garlic, sliced");
         garlic.setAmount(BigDecimal.valueOf(3));
         garlic.setUnitOfMeasure(unitOfMeasureRepository.findByDescription("Clove").get());
+        sauteedSpinach.addIngredient(garlic);
         Ingredient saltToTaste = new Ingredient();
         saltToTaste.setDescription("Salt to taste");
         saltToTaste.setAmount(BigDecimal.valueOf(1));
         saltToTaste.setUnitOfMeasure(some);
-
-        ingredients = Set.of(spinach, oliveOil, garlic, saltToTaste);
+        sauteedSpinach.addIngredient(saltToTaste);
         category = categoryRepository.findByDescription("American").get();
         categories = Set.of(category);
         notes = new Notes();
@@ -128,7 +138,6 @@ public class DataLoader implements ApplicationListener<ContextRefreshedEvent> {
                 "Spinach releases a lot of water as it cooks, so my father’s trick is to drain and dry the spinach leaves as well as you can, using a salad spinner if need be, before cooking them.\n" +
                 "Then sauté some garlic in olive oil in a large wide pan, and add the cleaned, drained, and dried spinach leaves to the pan. Pack the pan with spinach, cover and cook for only a minute or two tops.");
 
-        sauteedSpinach.setIngredients(ingredients);
         sauteedSpinach.setDifficulty(Difficulty.EASY);
         sauteedSpinach.setServings(4);
         sauteedSpinach.setPrepTime(5);
