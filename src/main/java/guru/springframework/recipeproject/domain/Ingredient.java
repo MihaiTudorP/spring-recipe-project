@@ -1,7 +1,6 @@
 package guru.springframework.recipeproject.domain;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -9,6 +8,9 @@ import java.math.BigDecimal;
 @Data
 @EqualsAndHashCode(exclude = {"recipe"})
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Ingredient {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,13 +1,15 @@
 package guru.springframework.recipeproject.domain;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Data
 @EqualsAndHashCode(exclude = {"recipe"})
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Notes {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
