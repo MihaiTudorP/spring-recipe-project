@@ -54,4 +54,12 @@ class RecipeControllerTest {
                 .andExpect(MockMvcResultMatchers.model().attributeExists("id"))
                 .andExpect(MockMvcResultMatchers.model().attributeExists("exception"));
     }
+
+    @Test
+    void newRecipe() throws Exception{
+        mockMvc.perform(MockMvcRequestBuilders.get("/recipe/new"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("/recipe/recipeform"))
+                .andExpect(MockMvcResultMatchers.model().attributeExists("recipe"));
+    }
 }

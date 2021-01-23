@@ -1,12 +1,12 @@
 package guru.springframework.recipeproject.controllers;
 
+import guru.springframework.recipeproject.commands.RecipeCommand;
+import guru.springframework.recipeproject.domain.Recipe;
 import guru.springframework.recipeproject.services.RecipeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -27,5 +27,17 @@ public class RecipeController {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return "/recipe/notFound";
         }
+    }
+
+    @GetMapping("/new")
+    public String newRecipe(Model model){
+        model.addAttribute("recipe", new RecipeCommand());
+        return "/recipe/recipeform";
+    }
+
+    @PostMapping(name = "recipe")
+    public String saveOrUpdateRecipe(@ModelAttribute RecipeCommand command){
+       RecipeCommand savedCommand = recipeService.saveRecipeCommand(command);
+        return String.format("redirect:/recipe/show/%d", savedCommand.getId());
     }
 }
