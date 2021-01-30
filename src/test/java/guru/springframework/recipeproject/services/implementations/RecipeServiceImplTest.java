@@ -8,21 +8,21 @@ import guru.springframework.recipeproject.converters.RecipeCommandToRecipe;
 import guru.springframework.recipeproject.converters.RecipeToRecipeCommand;
 import guru.springframework.recipeproject.domain.*;
 import guru.springframework.recipeproject.repositories.RecipeRepository;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-public class RecipeServiceImplTest {
+@ExtendWith(MockitoExtension.class)
+class RecipeServiceImplTest {
 
     public static final long ID = 1L;
     public static final String DESCRIPTION = "test";
@@ -46,13 +46,8 @@ public class RecipeServiceImplTest {
     @Mock
     RecipeToRecipeCommand recipeToRecipeCommand;
 
-    @Before
-    public void setUp() throws Exception{
-        MockitoAnnotations.openMocks(this);
-    }
-
     @Test
-    public void findAll() {
+    void findAll() {
         Recipe recipe = new Recipe();
         HashSet recipesData = new HashSet();
         recipesData.add(recipe);
@@ -64,7 +59,7 @@ public class RecipeServiceImplTest {
     }
 
     @Test
-    public void findById(){
+    void findById(){
         when(recipeRepository.findById(1L)).thenReturn(Optional.of(Recipe.builder().id(1L).description(DESCRIPTION).build()));
         Recipe recipe = recipeService.findById(1L);
         assertEquals(1L, (long) recipe.getId());
@@ -72,14 +67,14 @@ public class RecipeServiceImplTest {
         verify(recipeRepository, times(1)).findById(1L);
     }
 
-    @Test(expected = RuntimeException.class)
-    public void findByIdNotFound(){
-        assertNull(recipeService.findById(1L));
+    @Test
+    void findByIdNotFound(){
+        assertThrows(RuntimeException.class, () -> recipeService.findById(1L));
         verify(recipeRepository, times(1)).findById(1L);
     }
 
     @Test
-    public void saveRecipeCommand(){
+    void saveRecipeCommand(){
         final CategoryCommand categoryCommand1 = CategoryCommand.builder().id(1L).build();
         final CategoryCommand categoryCommand2 = CategoryCommand.builder().id(2L).build();
         final Set<CategoryCommand> categoryCommands = Set.of(categoryCommand1, categoryCommand2);
@@ -158,5 +153,31 @@ public class RecipeServiceImplTest {
         verify(recipeCommandToRecipe, times(1)).convert(command);
         verify(recipeRepository, times(1)).save(convertedRecipe);
         verify(recipeToRecipeCommand, times(1)).convert(savedRecipe);
+    }
+
+    @Test
+    void testDeleteById(){
+        Long idToDelete = 2L;
+        recipeService.deleteById(idToDelete);
+        verify(recipeRepository, times(1)).deleteById(2L);
+    }
+
+    @Test
+    void testFindCommandById(){
+        final Recipe recipe = Recipe.builder().id(1L).build();
+        when(recipeRepository.findById(1L)).thenReturn(Optional.of(recipe));
+        when(recipeToRecipeCommand.convert(recipe)).thenReturn(RecipeCommand.builder().id(1L).build());
+        final RecipeCommand command = recipeService.findCommandById(1L);
+        assertNotNull(command);
+        assertEquals(1L, (long)command.getId());
+        verify(recipeRepository, times(1)).findById(1L);
+        verify(recipeToRecipeCommand, times(1)).convert(recipe);
+    }
+
+    @Test
+    void testFindCommandByIdNotFound(){
+        assertThrows(RuntimeException.class, ()->recipeService.findCommandById(1L));
+        verify(recipeRepository, times(1)).findById(1L);
+        verify(recipeToRecipeCommand, times(0)).convert(any());
     }
 }

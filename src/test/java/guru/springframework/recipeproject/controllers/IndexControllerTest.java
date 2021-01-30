@@ -2,11 +2,12 @@ package guru.springframework.recipeproject.controllers;
 
 import guru.springframework.recipeproject.domain.Recipe;
 import guru.springframework.recipeproject.services.RecipeService;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
@@ -14,15 +15,17 @@ import org.springframework.ui.Model;
 import java.util.HashSet;
 import java.util.Set;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
-public class IndexControllerTest {
+@ExtendWith(MockitoExtension.class)
+class IndexControllerTest {
 
+    @InjectMocks
     IndexController indexController;
 
     @Mock
@@ -31,14 +34,8 @@ public class IndexControllerTest {
     @Mock
     RecipeService recipeService;
 
-    @Before
-    public void setUp() throws Exception {
-        MockitoAnnotations.openMocks(this);
-        indexController = new IndexController(recipeService);
-    }
-
     @Test
-    public void testMockMVC() throws Exception {
+    void testMockMVC() throws Exception {
         MockMvc mockMvc = MockMvcBuilders.standaloneSetup(indexController).build();
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk())
@@ -46,7 +43,7 @@ public class IndexControllerTest {
     }
 
     @Test
-    public void getIndexPage() {
+    void getIndexPage() {
         //given
         Set<Recipe> recipes = new HashSet<>();
         final Recipe recipe1 = new Recipe();

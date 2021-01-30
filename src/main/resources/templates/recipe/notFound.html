@@ -16,7 +16,12 @@
             <div class="card">
 
                 <div class="card-header bg-dark text-white">
-                    <h1>Recipe with id #<span th:text="${id}"></span></h1>
+                    <div class="row">
+                        <div class="col-sm-9"><h1>Recipe with id #<span th:text="${id}"></span></h1></div>
+                        <div class="col-sm-3" align="right">
+                            <a class="btn btn-danger" href="#" role="button" th:href="@{'/'}">Back</a>
+                        </div>
+                    </div>
                 </div>
                 <div class="card-body">
                     <p th:text="${exception}">Not Found!</p>

@@ -22,11 +22,15 @@ public class RecipeController {
             model.addAttribute("recipe", recipeService.findById(id));
             return "/recipe/show";
         } catch (RuntimeException e){
-            model.addAttribute("exception", e.getMessage());
-            model.addAttribute("id", id);
-            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
-            return "/recipe/notFound";
+            return redirectNotFound(response, model, id, e);
         }
+    }
+
+    private String redirectNotFound(HttpServletResponse response, Model model, Long id, RuntimeException e) {
+        model.addAttribute("exception", e.getMessage());
+        model.addAttribute("id", id);
+        response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        return "/recipe/notFound";
     }
 
     @GetMapping("/new")
@@ -39,5 +43,21 @@ public class RecipeController {
     public String saveOrUpdateRecipe(@ModelAttribute RecipeCommand command){
        RecipeCommand savedCommand = recipeService.saveRecipeCommand(command);
         return String.format("redirect:/recipe/show/%d", savedCommand.getId());
+    }
+
+    @GetMapping("/{id}/update")
+    public String updateRecipe(@PathVariable long id, Model model, HttpServletResponse response){
+        try {
+            model.addAttribute("recipe", recipeService.findCommandById(id));
+            return "/recipe/recipeform";
+        } catch (RuntimeException e){
+            return redirectNotFound(response, model, id, e);
+        }
+    }
+
+    @GetMapping("/{id}/delete")
+    public String deleteRecipeById(@PathVariable long id){
+        recipeService.deleteById(id);
+        return "redirect:/";
     }
 }

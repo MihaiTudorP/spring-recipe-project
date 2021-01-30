@@ -1,9 +1,6 @@
 package guru.springframework.recipeproject.domain;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -13,6 +10,7 @@ import java.util.Set;
 @Entity
 @NoArgsConstructor
 @ToString(exclude = {"categories", "ingredients"})
+@EqualsAndHashCode(exclude = {"ingredients", "categories"})
 public class Recipe {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
