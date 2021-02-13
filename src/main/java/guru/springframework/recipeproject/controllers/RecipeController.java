@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 public class RecipeController {
     private final RecipeService recipeService;
 
-    @GetMapping("/show/{id}")
+    @GetMapping("/{id}/show")
     public String showRecipe(HttpServletResponse response, Model model, @PathVariable Long id){
         try {
             model.addAttribute("recipe", recipeService.findById(id));
@@ -42,7 +42,7 @@ public class RecipeController {
     @PostMapping(name = "recipe")
     public String saveOrUpdateRecipe(@ModelAttribute RecipeCommand command){
        RecipeCommand savedCommand = recipeService.saveRecipeCommand(command);
-        return String.format("redirect:/recipe/show/%d", savedCommand.getId());
+        return String.format("redirect:/recipe/%d/show", savedCommand.getId());
     }
 
     @GetMapping("/{id}/update")

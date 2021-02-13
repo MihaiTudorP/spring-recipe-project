@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(MockitoExtension.class)
 class RecipeControllerTest {
 
-    public static final String URL_SHOW = "/recipe/show/1";
+    public static final String URL_SHOW = "/recipe/1/show";
     public static final String URL_UPDATE = "/recipe/1/update";
     @Mock
     RecipeService recipeService;
@@ -90,7 +90,7 @@ class RecipeControllerTest {
                     "servings", "1",
                     "source", "test")))
                 .andExpect(status().isFound())
-                .andExpect(view().name("redirect:/recipe/show/1"));
+                .andExpect(view().name("redirect:/recipe/1/show"));
     }
 
     @Test
